@@ -4,12 +4,23 @@ import (
 	"github.com/rivo/tview"
 )
 
+var (
+	username string
+	password string
+)
+
 func main() {
 
 	app := tview.NewApplication()
 	form := tview.NewForm().
-		AddInputField("User name", "", 20, nil, nil).
-		AddPasswordField("Password", "", 10, '*', nil).
+		AddInputField("User name", "", 20,
+			nil, func(text string) {
+				username = text
+			}).
+		AddPasswordField("Password", "", 10, '*',
+			func(text string) {
+				password = text
+			}).
 		AddButton("Login", nil).
 		AddButton("Dont have a account? Signup", func() {
 			app.Stop()
@@ -18,5 +29,4 @@ func main() {
 	if err := app.SetRoot(form, true).EnableMouse(true).Run(); err != nil {
 		panic(err)
 	}
-
 }
